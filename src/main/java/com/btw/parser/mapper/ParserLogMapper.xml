@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.btw.parser.mapper.ParserLogMapper">
+
+    <insert id="insertLog" parameterType="com.fate.log.ParserLogger">
+        insert into PARSER_FILE_LOG
+        (
+            FILE_TYPE,
+            FILE_NAME,
+            START_TIME,
+            END_TIME,
+            STATUS,
+            EXCP
+        )
+        values
+        (
+            #{fileType, jdbcType=VARCHAR},
+            #{fileName, jdbcType=VARCHAR},
+            #{startTime, jdbcType=VARCHAR},
+            #{endTime, jdbcType=VARCHAR},
+            #{status, jdbcType=VARCHAR},
+            #{excp, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateLog" parameterType="com.fate.log.ParserLogger">
+        update PARSER_FILE_LOG
+        set
+        END_TIME = #{endTime, jdbcType=VARCHAR},
+        STATUS = #{status, jdbcType=VARCHAR},
+        EXCP = #{excp, jdbcType=VARCHAR}
+        where FILE_TYPE = #{fileType, jdbcType=VARCHAR}
+        and FILE_NAME = #{fileName, jdbcType=VARCHAR}
+        and  START_TIME = #{startTime, jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryWXWarn" resultType="java.lang.String" parameterType="java.lang.String">
+        select t.user_id from PARSER_WARN_CONFIG t
+        where t.file_type = #{fileType}
+        and t.warn_type = 'WX'
+        and t.use_limit = 'Y'
+    </select>
+</mapper>
